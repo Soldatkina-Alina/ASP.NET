@@ -29,16 +29,23 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        public async Task<List<EmployeeResponse>> GetEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllAsync();
+            var employees = await _employeeRepository.GetAllWithIncludesAsync(e => e.Role);
 
             var employeesModelList = employees.Select(x =>
-                new EmployeeShortResponse()
+                new EmployeeResponse()
                 {
                     Id = x.Id,
                     Email = x.Email,
                     FullName = x.FullName,
+                    Role = new RoleItemResponse()
+                    {
+                        Id = x.Role.Id,
+                        Name = x.Role.Name,
+                        Description = x.Role.Description
+                    },
+                    AppliedPromocodesCount = x.AppliedPromocodesCount
                 }).ToList();
 
             return employeesModelList;
@@ -51,7 +58,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<EmployeeResponse>> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = await _employeeRepository.GetByIdWithIncludesAsync(id, e => e.Role);
 
             if (employee == null)
                 return NotFound();
@@ -62,6 +69,7 @@ namespace PromoCodeFactory.WebHost.Controllers
                 Email = employee.Email,
                 Role = new RoleItemResponse()
                 {
+                    Id = employee.Role.Id,
                     Name = employee.Role.Name,
                     Description = employee.Role.Description
                 },
