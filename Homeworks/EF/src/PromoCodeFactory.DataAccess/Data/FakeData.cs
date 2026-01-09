@@ -10,8 +10,6 @@ namespace PromoCodeFactory.DataAccess.Data
 {
     public static class FakeData
     {
-        // Создаем отдельные экземпляры для каждой сущности
-        // чтобы избежать "instance cannot be tracked" ошибок
         public static (List<Role> roles, List<Employee> employees, List<Preference> preferences,List<Customer> customers, List<PromoCode> promoCodes) GetAllData()
         {
             // 1. Создаем Роли (каждый экземпляр уникальный)
@@ -78,7 +76,6 @@ namespace PromoCodeFactory.DataAccess.Data
                 AppliedPromocodesCount = 10
             };
 
-
             var employees = new List<Employee> { employee1, employee2 };
 
             // 4. Создаем Customers с CustomerPreferences
@@ -102,9 +99,17 @@ namespace PromoCodeFactory.DataAccess.Data
                 Preference = theaterPreference
             };
 
+            var customerPreferenceFamilyPreference = new CustomerPreference
+            {
+                CustomerId = customerId,
+                PreferenceId = familyPreference.Id,
+                Customer = customer,
+                Preference = familyPreference
+            };
+
             // Добавляем связь в коллекцию
             customer.Preferences.Add(customerPreference);
-
+            customer.Preferences.Add(customerPreferenceFamilyPreference);
             // Также добавляем обратную связь в Preference (если есть коллекция)
 
             var customers = new List<Customer> { customer };
