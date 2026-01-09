@@ -52,5 +52,32 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return await query.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> ids)
+        {
+            return await __dbContext.Set<T>().Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task CreateAsync(T entity)
+        {
+            await __dbContext.Set<T>().AddAsync(entity);
+            await __dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            __dbContext.Set<T>().Update(entity);
+            await __dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                __dbContext.Set<T>().Remove(entity);
+                await __dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

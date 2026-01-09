@@ -38,5 +38,25 @@ namespace PromoCodeFactory.DataAccess.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

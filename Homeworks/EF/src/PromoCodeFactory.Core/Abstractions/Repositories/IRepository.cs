@@ -16,5 +16,13 @@ namespace PromoCodeFactory.Core.Abstractions.Repositories
         Task<IEnumerable<T>> GetAllWithIncludesAsync(params Expression<Func<T, object>>[] includes);
 
         Task<T> GetByIdWithIncludesAsync(Guid id, params Expression<Func<T, object>>[] includes);
+
+        Task<IEnumerable<T>> GetByIdsAsync(IEnumerable<Guid> ids);
+
+        Task CreateAsync(T entity);
+
+        Task UpdateAsync(T entity);
+
+        Task DeleteAsync(Guid id);
     }
 }
