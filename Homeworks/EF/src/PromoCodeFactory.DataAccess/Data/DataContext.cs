@@ -32,15 +32,7 @@ namespace PromoCodeFactory.DataAccess.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Если опции не переданы, используем SQLite файл в рабочем каталоге
-            if (!optionsBuilder.IsConfigured)
-            {
-                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "app.db");
-                optionsBuilder.UseSqlite($"Data Source={dbPath}");
-            }
-        }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

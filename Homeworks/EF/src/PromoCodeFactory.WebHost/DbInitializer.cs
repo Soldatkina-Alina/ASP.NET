@@ -16,14 +16,20 @@ namespace PromoCodeFactory.WebHost
         public static void CreateNewBD(DataContext dbcontext)
         {
             context = dbcontext;
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            // Миграции применяются вручную
+            // context.Database.Migrate();
 
             SeedDb();
         }
 
         private static void SeedDb()
         {
+            // Проверяем, если данные уже есть, не добавляем
+            if (context.Roles.Any() || context.Preferences.Any() || context.Customers.Any())
+            {
+                return; 
+            }
+
             var (roles, employees, preferences, customers, promoCodes) = FakeData.GetAllData();
 
             context.Roles.AddRange(roles);
