@@ -18,9 +18,14 @@ namespace PromoCodeFactory.DataAccess.Repositories
         public EFRepository(DataContext dbContext) { 
             __dbContext = dbContext;
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
         {
-            return __dbContext.Set<T>().ToList();
+            return  predicate == null
+                ? await __dbContext.Set<T>().ToListAsync()
+                :
+             await __dbContext.Set<T>()
+            .Where(predicate)
+            .ToListAsync();
         }
 
         public Task<T> GetByIdAsync(Guid id)

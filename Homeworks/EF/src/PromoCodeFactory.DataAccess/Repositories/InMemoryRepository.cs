@@ -19,7 +19,7 @@ namespace PromoCodeFactory.DataAccess.Repositories
             Data = data;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null)
         {
             return Task.FromResult(Data);
         }

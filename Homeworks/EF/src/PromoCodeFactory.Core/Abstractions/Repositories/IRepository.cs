@@ -9,7 +9,7 @@ namespace PromoCodeFactory.Core.Abstractions.Repositories
     public interface IRepository<T>
         where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null);
 
         Task<T> GetByIdAsync(Guid id);
 
