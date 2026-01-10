@@ -1,0 +1,16 @@
+Список всех применённых команд для миграций:
+
+1. dotnet tool install --global dotnet-ef --version 8.0.0 — установка EF CLI tools.
+
+2. dotnet restore — восстановление пакетов.
+
+3. dotnet ef migrations add CreateDB --project PromoCodeFactory.DataAccess --startup-project PromoCodeFactory.WebHost — создание миграции CreateDB.
+
+4. dotnet ef database update --project PromoCodeFactory.DataAccess --startup-project PromoCodeFactory.WebHost — применение миграции CreateDB.
+
+5. dotnet ef migrations add AddDescriptionToPromoCode --project PromoCodeFactory.DataAccess --startup-project PromoCodeFactory.WebHost — создание миграции AddDescriptionToPromoCode.
+
+6. dotnet ef database update --project PromoCodeFactory.DataAccess --startup-project PromoCodeFactory.WebHost — применение миграции AddDescriptionToPromoCode.
+
+Откат миграции:
+dotnet ef migrations remove --project PromoCodeFactory.DataAccess --startup-project PromoCodeFactory.WebHost — удаление последней миграции.
