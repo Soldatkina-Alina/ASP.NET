@@ -8,6 +8,22 @@ namespace PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
+        public static IEnumerable<Role> Roles => new List<Role>()
+        {
+            new Role()
+            {
+                Id = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
+                Name = "Admin",
+                Description = "Администратор",
+            },
+            new Role()
+            {
+                Id = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
+                Name = "PartnerManager",
+                Description = "Партнерский менеджер"
+            }
+        };
+
         public static IEnumerable<Employee> Employees => new List<Employee>()
         {
             new Employee()
@@ -25,25 +41,9 @@ namespace PromoCodeFactory.DataAccess.Data
                 Email = "andreev@somemail.ru",
                 FirstName = "Петр",
                 LastName = "Андреев",
-                Role = Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
+                Role =  Roles.FirstOrDefault(x => x.Name == "PartnerManager"),
                 AppliedPromocodesCount = 10
             },
-        };
-
-        public static IEnumerable<Role> Roles => new List<Role>()
-        {
-            new Role()
-            {
-                Id = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
-                Name = "Admin",
-                Description = "Администратор",
-            },
-            new Role()
-            {
-                Id = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
-                Name = "PartnerManager",
-                Description = "Партнерский менеджер"
-            }
         };
 
         public static IEnumerable<Preference> Preferences => new List<Preference>()
@@ -78,12 +78,29 @@ namespace PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        //TODO: Добавить предзаполненный список предпочтений
+                        Preferences = null,
                     }
                 };
 
                 return customers;
             }
         }
+
+
+        public static IEnumerable<PromoCode> PromoCodes => new List<PromoCode>()
+        {
+            new PromoCode()
+            {
+                Id = Guid.Parse("d3b5f4e1-3c4a-4f7e-9f0e-1234567890ab"),
+                Code = "PROMO2024",
+                ServiceInfo = "Промокод на скидку 20% в 2026 году",
+                BeginDate = new DateTime(2026, 1, 1),
+                EndDate = new DateTime(2026, 12, 31),
+                PartnerName = "Компания А",
+                Customer = null,
+                Preference = Preferences.FirstOrDefault(x => x.Name == "Театр")
+            }
+        };
+
     }
 }

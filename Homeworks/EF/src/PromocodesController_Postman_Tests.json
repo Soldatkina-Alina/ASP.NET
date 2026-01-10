@@ -1,0 +1,111 @@
+{
+  "info": {
+    "name": "PromocodesController Tests",
+    "_postman_id": "12345678-1234-1234-1234-123456789abc",
+    "description": "Test collection for PromoCodeFactory PromocodesController API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "GET /api/v1/promocodes - Get All Promocodes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/promocodes",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "promocodes"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is array\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /api/v1/promocodes - Give Promocodes to Customers with Preference",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"serviceInfo\": \"Скидка 20% на билеты\",\n    \"partnerName\": \"Театр А\",\n    \"promoCode\": \"THEATER20\",\n    \"preference\": \"Театр\"\n}"
+        },
+        "url": {
+          "raw": "https://localhost:5001/api/v1/promocodes",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "promocodes"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /api/v1/promocodes - Invalid Preference",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"serviceInfo\": \"Скидка 20%\",\n    \"partnerName\": \"Компания\",\n    \"promoCode\": \"INVALID\",\n    \"preference\": \"Неизвестное\"\n}"
+        },
+        "url": {
+          "raw": "https://localhost:5001/api/v1/promocodes",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "promocodes"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

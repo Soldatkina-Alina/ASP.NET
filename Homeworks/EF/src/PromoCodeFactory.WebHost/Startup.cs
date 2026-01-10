@@ -17,14 +17,20 @@ namespace PromoCodeFactory.WebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped(typeof(IRepository<Employee>), (x) =>
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddScoped(typeof(IRepository<Role>), (x) =>
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
-            services.AddScoped(typeof(IRepository<Preference>), (x) =>
-                new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
-            services.AddScoped(typeof(IRepository<Customer>), (x) =>
-                new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+            //services.AddScoped(typeof(IRepository<Employee>), (x) =>
+            //    new InMemoryRepository<Employee>(FakeDataFactory.Employees));
+            //services.AddScoped(typeof(IRepository<Role>), (x) =>
+            //    new InMemoryRepository<Role>(FakeDataFactory.Roles));
+            //services.AddScoped(typeof(IRepository<Preference>), (x) =>
+            //    new InMemoryRepository<Preference>(FakeDataFactory.Preferences));
+            //services.AddScoped(typeof(IRepository<Customer>), (x) =>
+            //    new InMemoryRepository<Customer>(FakeDataFactory.Customers));
+            //services.AddScoped(typeof(IRepository<PromoCode>), (x) =>
+            //    new InMemoryRepository<PromoCode>(FakeDataFactory.PromoCodes));
+
+            services.AddDbContext<DataContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 
             services.AddOpenApiDocument(options =>
             {

@@ -1,0 +1,315 @@
+{
+  "info": {
+    "name": "CustomersController Tests",
+    "_postman_id": "12345678-1234-1234-1234-123456789abc",
+    "description": "Test collection for PromoCodeFactory CustomersController API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "GET /api/v1/customers - Get Customers List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is array\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/v1/customers/{id} - Get Customer by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response has correct customer data\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.id).to.eql('a6c8c6b1-4349-45b0-ab31-244740aaf0f0');",
+              "    pm.expect(jsonData.firstName).to.eql('Иван');",
+              "    pm.expect(jsonData.lastName).to.eql('Петров');",
+              "    pm.expect(jsonData.email).to.eql('ivan_sergeev@mail.ru');",
+              "    pm.expect(jsonData.preferences).to.be.an('array');",
+              "    if (jsonData.preferences.length > 0) {",
+              "        pm.expect(jsonData.preferences[0]).to.have.property('customerId');",
+              "        pm.expect(jsonData.preferences[0]).to.have.property('preferenceId');",
+              "        pm.expect(jsonData.preferences[0]).to.have.property('preferenceName');",
+              "    }",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/v1/customers/{id}/preferences - Get Customer Preferences",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0/preferences",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0", "preferences"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is array of preferences\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "    if (jsonData.length > 0) {",
+              "        pm.expect(jsonData[0]).to.have.property('customerId');",
+              "        pm.expect(jsonData[0]).to.have.property('preferenceId');",
+              "        pm.expect(jsonData[0]).to.have.property('preferenceName');",
+              "    }",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/v1/customers/{invalid-id} - Get Non-existent Customer",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/00000000-0000-0000-0000-000000000000",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "00000000-0000-0000-0000-000000000000"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /api/v1/customers - Create New Customer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"Антон\",\n    \"lastName\": \"Попов\",\n    \"email\": \"al@example.com\",\n    \"preferenceIds\": [\"ef7f299f-92d7-459f-896e-078ed53ef99c\"],\n    \"promoCodeIds\": [\"d3b5f4e1-3c4a-4f7e-9f0e-1234567890ab\"]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /api/v1/customers/{id} - Update Customer",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"Иван\",\n    \"lastName\": \"Иванов\",\n    \"email\": \"ivan_updated@example.com\",\n    \"preferenceIds\": [\"76324c47-68d2-472d-abb8-33cfa8cc0c84\"],\n    \"promoCodeIds\": []\n}"
+        },
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /api/v1/customers/{customerId}/promocodes/{promoCodeId} - Assign PromoCode",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0/promocodes/d3b5f4e1-3c4a-4f7e-9f0e-1234567890ab",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0", "promocodes", "d3b5f4e1-3c4a-4f7e-9f0e-1234567890ab"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT /api/v1/customers/{customerId}/promocodes/{invalid-promoCodeId} - Assign Invalid PromoCode",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0/promocodes/00000000-0000-0000-0000-000000000000",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0", "promocodes", "00000000-0000-0000-0000-000000000000"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE /api/v1/customers/{id} - Delete Customer",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/a6c8c6b1-4349-45b0-ab31-244740aaf0f0",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "a6c8c6b1-4349-45b0-ab31-244740aaf0f0"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE /api/v1/customers/{invalid-id} - Delete Non-existent Customer",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:5001/api/v1/customers/00000000-0000-0000-0000-000000000000",
+          "protocol": "https",
+          "host": ["localhost"],
+          "port": "5001",
+          "path": ["api", "v1", "customers", "00000000-0000-0000-0000-000000000000"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
