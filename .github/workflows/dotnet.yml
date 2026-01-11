@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'PromoCodeFactory.UnitTests/**'
+      - 'Homeworks/UnitTests/src/PromoCodeFactory.UnitTests/**'
       - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'PromoCodeFactory.UnitTests/**'
+      - 'Homeworks/UnitTests/src/PromoCodeFactory.UnitTests/**'
       - '.github/workflows/dotnet.yml'
 
 jobs:
@@ -25,10 +25,10 @@ jobs:
         dotnet-version: 8.0.x
     
     - name: Restore dependencies
-      run: dotnet restore PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj
+      run: dotnet restore Homeworks/UnitTests/src/PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj
     
     - name: Build
-      run: dotnet build PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj --configuration Release --no-restore
+      run: dotnet build Homeworks/UnitTests/src/PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj --no-restore
     
     - name: Test
-      run: dotnet test PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj --configuration Release --no-build --verbosity normal
+      run: dotnet test Homeworks/UnitTests/src/PromoCodeFactory.UnitTests/PromoCodeFactory.UnitTests.csproj --no-build --verbosity normal
