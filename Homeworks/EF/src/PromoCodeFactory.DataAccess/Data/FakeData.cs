@@ -27,7 +27,14 @@ namespace PromoCodeFactory.DataAccess.Data
                 Description = "Партнерский менеджер"
             };
 
-            var roles = new List<Role> { adminRole, managerRole };
+            var viewer = new Role()
+            {
+                Id = Guid.Parse("c1e8f4a1-3d5b-4f6e-9f0e-1234567890cd"),
+                Name = "Viewer",
+                Description = "Просмотрщик"
+            };
+
+            var roles = new List<Role> { adminRole, managerRole, viewer };
 
             // 2. Создаем Preferences
             var theaterPreference = new Preference()
