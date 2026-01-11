@@ -12,12 +12,12 @@ namespace PromoCodeFactory.WebHost
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            CreateHostBuilder(args).Build().Run();
 
-            // Инициализация БД при запуске приложения
-            InitializeDatabase(host);
+            //// Инициализация БД при запуске приложения
+            //InitializeDatabase(host);
 
-            host.Run();
+            //host.Run();
 
         }
 
@@ -25,16 +25,16 @@ namespace PromoCodeFactory.WebHost
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 
-        private static void InitializeDatabase(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+        //private static void InitializeDatabase(IHost host)
+        //{
+        //    using (var scope = host.Services.CreateScope())
+        //    {
+        //        var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<DataContext>();
+        //        var context = services.GetRequiredService<DataContext>();
 
-                DbInitializer.CreateNewBD(context);
-            }
-        }
+        //        DbInitializer.CreateNewBD(context);
+        //    }
+        //}
     }
 }

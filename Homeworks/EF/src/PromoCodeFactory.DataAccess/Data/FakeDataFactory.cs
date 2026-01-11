@@ -8,21 +8,6 @@ namespace PromoCodeFactory.DataAccess.Data
 {
     public static class FakeDataFactory
     {
-        public static IEnumerable<Role> Roles => new List<Role>()
-        {
-            new Role()
-            {
-                Id = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
-                Name = "Admin",
-                Description = "Администратор",
-            },
-            new Role()
-            {
-                Id = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
-                Name = "PartnerManager",
-                Description = "Партнерский менеджер"
-            }
-        };
 
         public static IEnumerable<Employee> Employees => new List<Employee>()
         {
@@ -45,6 +30,29 @@ namespace PromoCodeFactory.DataAccess.Data
                 AppliedPromocodesCount = 10
             },
         };
+
+        public static IEnumerable<Role> Roles => new List<Role>()
+        {
+            new Role()
+            {
+                Id = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
+                Name = "Admin",
+                Description = "Администратор",
+            },
+            new Role()
+            {
+                Id = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
+                Name = "PartnerManager",
+                Description = "Партнерский менеджер"
+            },
+            new Role()
+            {
+                Id = Guid.Parse("d1f1e8c4-3b6e-4f2a-9f4e-1234567890ab"),
+                Name = "Viewer",
+                Description = "Просмотрщик"
+            }
+        };
+
 
         public static IEnumerable<Preference> Preferences => new List<Preference>()
         {
@@ -78,7 +86,38 @@ namespace PromoCodeFactory.DataAccess.Data
                         Email = "ivan_sergeev@mail.ru",
                         FirstName = "Иван",
                         LastName = "Петров",
-                        Preferences = null,
+                        Preferences = new List<CustomerPreference>()
+                        {
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("76324c47-68d2-472d-abb8-33cfa8cc0c84")
+                            },
+                            new CustomerPreference()
+                            {
+                                CustomerId = customerId,
+                                PreferenceId = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c")
+                            }
+                        }
+                        //,
+                        //PromoCodes = new List<PromoCode>()
+                        //{
+                        //    new PromoCode()
+                        //    {
+                        //        Id = Guid.Parse("d3b5f4e1-3c4a-4f7e-9f0e-1234567890ab"),
+                        //        Code = "PROMO2024",
+                        //        ServiceInfo = "Промокод на скидку 20% в 2026 году",
+                        //        BeginDate = new DateTime(2026, 1, 1),
+                        //        EndDate = new DateTime(2026, 12, 31),
+                        //        PartnerName = "Компания А"
+                        //        ,
+                        //        Preference = new Preference()
+                        //        {
+                        //            Id = Guid.Parse("c4bda62e-fc74-4256-a956-4760b3858cbd"),
+                        //        }
+                        //    }
+                        //}
+
                     }
                 };
 
@@ -97,8 +136,14 @@ namespace PromoCodeFactory.DataAccess.Data
                 BeginDate = new DateTime(2026, 1, 1),
                 EndDate = new DateTime(2026, 12, 31),
                 PartnerName = "Компания А",
-                Customer = null,
-                Preference = Preferences.FirstOrDefault(x => x.Name == "Театр")
+                Customer = new Customer()
+                {
+                    Id = Guid.Parse("a6c8c6b1-4349-45b0-ab31-244740aaf0f0"),
+                },
+                Preference = new Preference()
+                {
+                    Id = Guid.Parse("ef7f299f-92d7-459f-896e-078ed53ef99c"),
+                }
             }
         };
 

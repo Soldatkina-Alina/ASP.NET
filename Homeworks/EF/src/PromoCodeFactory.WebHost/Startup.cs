@@ -29,6 +29,7 @@ namespace PromoCodeFactory.WebHost
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultSqlLiteConnection")));
 
+            services.AddScoped<IDbInitializerRepository, DbInitializer>();
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 
             services.AddOpenApiDocument(options =>
@@ -39,7 +40,7 @@ namespace PromoCodeFactory.WebHost
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializerRepository dbInitializerRepository)
         {
             if (env.IsDevelopment())
             {
@@ -64,6 +65,8 @@ namespace PromoCodeFactory.WebHost
             {
                 endpoints.MapControllers();
             });
+
+            dbInitializerRepository.InitializeDb();
         }
     }
 }
