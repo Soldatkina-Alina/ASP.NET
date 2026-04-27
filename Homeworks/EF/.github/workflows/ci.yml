@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-docker-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore src/PromoCodeFactory.sln
+
+      - name: Build solution (Release)
+        run: dotnet build src/PromoCodeFactory.sln --configuration Release --no-restore
+
+      - name: Build Docker image (check Dockerfile)
+        run: docker build -f src/Dockerfile -t ef-ci-check:latest src
