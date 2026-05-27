@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromoCodeFactory.Core.Domain.Administration;
 using PromoCodeFactory.Core.Domain.PromoCodeManagement;
+using Microsoft.EntityFrameworkCore.Proxies;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,22 +25,10 @@ namespace PromoCodeFactory.DataAccess.Data
 
         public DbSet<CustomerPreference> CustomerPreferences { get; set; }
 
-        public DataContext()
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options)
         {
-        }
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Если опции не переданы, используем SQLite файл в рабочем каталоге
-            if (!optionsBuilder.IsConfigured)
-            {
-                var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "app.db");
-                optionsBuilder.UseSqlite($"Data Source={dbPath}");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,7 +43,7 @@ namespace PromoCodeFactory.DataAccess.Data
             modelBuilder.Entity<Customer>()
                 .HasMany(c => c.PromoCodes)           // У Customer есть коллекция PromoCodes
                 .WithOne(pc => pc.Customer)           // У PromoCode есть свойство Customer
-                .OnDelete(DeleteBehavior.Cascade);    
+                .OnDelete(DeleteBehavior.Restrict);    
 
             // CustomerPreference many-to-many
             modelBuilder.Entity<CustomerPreference>()

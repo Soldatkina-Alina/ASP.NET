@@ -21,9 +21,9 @@ namespace PromoCodeFactory.DataAccess.Repositories
 
         public void InitializeDb()
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
+            MigrateDatabase();
             SeedDb();
 
             //context.AddRange(FakeDataFactory.Employees);
@@ -46,7 +46,12 @@ namespace PromoCodeFactory.DataAccess.Repositories
 
             LocalCheck();
         }
-    
+
+        public void MigrateDatabase()
+        {
+            //context.Database.Migrate();
+        }
+        
         public void CreateNewBD(DataContext dbcontext)
         {
             context.Database.EnsureDeleted();

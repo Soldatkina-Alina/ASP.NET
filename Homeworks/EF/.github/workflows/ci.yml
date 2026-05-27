@@ -27,3 +27,4 @@ jobs:
 
       - name: Build Docker image (check Dockerfile)
         run: docker build -f src/Dockerfile -t ef-ci-check:latest src
+
