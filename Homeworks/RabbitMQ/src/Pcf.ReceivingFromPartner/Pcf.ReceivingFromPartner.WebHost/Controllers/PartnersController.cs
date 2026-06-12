@@ -8,6 +8,8 @@ using Pcf.ReceivingFromPartner.Core.Domain;
 using Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Pcf.ReceivingFromPartner.WebHost.Models;
 using Pcf.ReceivingFromPartner.WebHost.Mappers;
+using MassTransit;
+using Pcf.Contracts;
 
 namespace Pcf.ReceivingFromPartner.WebHost.Controllers
 {
@@ -24,6 +26,7 @@ namespace Pcf.ReceivingFromPartner.WebHost.Controllers
         private readonly INotificationGateway _notificationGateway;
         private readonly IGivingPromoCodeToCustomerGateway _givingPromoCodeToCustomerGateway;
         private readonly IAdministrationGateway _administrationGateway;
+
 
         public PartnersController(IRepository<Partner> partnersRepository,
             IRepository<Preference> preferencesRepository,
