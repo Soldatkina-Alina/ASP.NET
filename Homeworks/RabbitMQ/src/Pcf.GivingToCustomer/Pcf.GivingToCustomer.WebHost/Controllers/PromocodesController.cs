@@ -21,13 +21,15 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
         private readonly IRepository<PromoCode> _promoCodesRepository;
         private readonly IRepository<Preference> _preferencesRepository;
         private readonly IRepository<Customer> _customersRepository;
+        private readonly IPromoCodeServices _promoCodeServices;
 
         public PromocodesController(IRepository<PromoCode> promoCodesRepository,
-            IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository)
+            IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository, IPromoCodeServices promoCodeServices)
         {
             _promoCodesRepository = promoCodesRepository;
             _preferencesRepository = preferencesRepository;
             _customersRepository = customersRepository;
+            _promoCodeServices = promoCodeServices;
         }
 
         /// <summary>
@@ -59,22 +61,15 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
         [HttpPost]
         public async Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
         {
-            //Получаем предпочтение по имени
-            var preference = await _preferencesRepository.GetByIdAsync(request.PreferenceId);
-
-            if (preference == null)
-            {
-                return BadRequest();
-            }
-
-            //  Получаем клиентов с этим предпочтением:
-            var customers = await _customersRepository
-                .GetWhere(d => d.Preferences.Any(x =>
-                    x.Preference.Id == preference.Id));
-
-            PromoCode promoCode = PromoCodeMapper.MapFromModel(request, preference, customers);
-
-            await _promoCodesRepository.AddAsync(promoCode);
+            await _promoCodeServices.GivePromocodeEithPreferenceAsync(
+                request.PromoCodeId,
+                request.PartnerId,
+                request.PromoCode,
+                request.ServiceInfo,
+                request.PreferenceId,
+                DateTime.Parse(request.BeginDate),
+                DateTime.Parse(request.EndDate)
+            );
 
             return CreatedAtAction(nameof(GetPromocodesAsync), new { }, null);
         }
