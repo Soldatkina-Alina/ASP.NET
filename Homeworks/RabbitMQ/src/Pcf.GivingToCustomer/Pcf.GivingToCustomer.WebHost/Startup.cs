@@ -57,7 +57,7 @@ namespace Pcf.GivingToCustomer.WebHost
                 x.AddConsumer<PromoCodeFromPartnerConsumers>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host(Configuration["RabbitMq:Host"], h =>
+                    cfg.Host(Configuration["RabbitMq:Host"], "/", h =>
                     {
                         h.Username(Configuration["RabbitMq:Username"]);
                         h.Password(Configuration["RabbitMq:Password"]);
