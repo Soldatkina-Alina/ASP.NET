@@ -12,5 +12,17 @@ namespace Pcf.Contracts
 
         public Guid PartnerId { get; init; }
 
+        public string PromoCode { get; init; }
+
+        public string ServiceInfo { get; init; }
+
+        public Guid PreferenceId { get; init; }
+
+        public DateTime BeginDate { get; init; }
+
+        public DateTime EndDate { get; init; }
+
+        public Guid? PartnerManagerId { get; init; }
+
     }
 }
