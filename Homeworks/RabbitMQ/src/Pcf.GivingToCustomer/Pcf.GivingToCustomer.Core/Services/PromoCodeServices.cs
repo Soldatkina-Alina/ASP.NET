@@ -15,6 +15,13 @@ namespace Pcf.GivingToCustomer.Core.Services
         public readonly IRepository<Preference> _preferencesRepository;
         public readonly IRepository<Customer> _customersRepository;
 
+        public PromoCodeServices(IRepository<PromoCode> promoCodesRepository, IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository)
+        {
+            _promoCodesRepository = promoCodesRepository;
+            _preferencesRepository = preferencesRepository;
+            _customersRepository = customersRepository;
+        }
+
         public async Task GivePromocodeEithPreferenceAsync(Guid promoCodeId, Guid partnerId, string promoCode, string serviceInfo, Guid preferenceId, DateTime beginDate, DateTime endDate)
         {
             //1. Получаем предпочтение по id
