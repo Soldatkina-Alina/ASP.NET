@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Pcf.GivingToCustomer.Core.Abstractions;
 using Pcf.GivingToCustomer.Core.Abstractions.Repositories;
 using Pcf.GivingToCustomer.Core.Domain;
 using Pcf.GivingToCustomer.WebHost.Mappers;
 using Pcf.GivingToCustomer.WebHost.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pcf.GivingToCustomer.WebHost.Controllers
 {
@@ -20,12 +21,14 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
     {
         private readonly IRepository<Customer> _customerRepository;
         private readonly IRepository<Preference> _preferenceRepository;
+        private readonly IPreferenceCacheService _preferenceCacheService;
 
         public CustomersController(IRepository<Customer> customerRepository, 
-            IRepository<Preference> preferenceRepository)
+            IRepository<Preference> preferenceRepository, IPreferenceCacheService preferenceCacheService)
         {
             _customerRepository = customerRepository;
             _preferenceRepository = preferenceRepository;
+            _preferenceCacheService = preferenceCacheService;
         }
         
         /// <summary>
@@ -71,8 +74,8 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
         public async Task<ActionResult<CustomerResponse>> CreateCustomerAsync(CreateOrEditCustomerRequest request)
         {
             //Получаем предпочтения из бд и сохраняем большой объект
-            var preferences = await _preferenceRepository
-                .GetRangeByIdsAsync(request.PreferenceIds);
+            var preferences = await _preferenceCacheService
+                .GetRangePreference(request.PreferenceIds);
 
             Customer customer = CustomerMapper.MapFromModel(request, preferences);
             
@@ -94,7 +97,8 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
             if (customer == null)
                 return NotFound();
             
-            var preferences = await _preferenceRepository.GetRangeByIdsAsync(request.PreferenceIds);
+            var preferences = await _preferenceCacheService
+                .GetRangePreference(request.PreferenceIds);
             
             CustomerMapper.MapFromModel(request, preferences, customer);
 

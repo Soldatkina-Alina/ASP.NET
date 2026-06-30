@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Pcf.GivingToCustomer.Core.Abstractions;
 using Pcf.GivingToCustomer.Core.Abstractions.Repositories;
 using Pcf.GivingToCustomer.Core.Domain;
 using Pcf.GivingToCustomer.WebHost.Models;
@@ -17,11 +18,11 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
     public class PreferencesController
         : ControllerBase
     {
-        private readonly IRepository<Preference> _preferencesRepository;
+        private readonly IPreferenceCacheService _preferenceCacheService;
 
-        public PreferencesController(IRepository<Preference> preferencesRepository)
+        public PreferencesController(IPreferenceCacheService preferenceCacheService)
         {
-            _preferencesRepository = preferencesRepository;
+            _preferenceCacheService = preferenceCacheService;
         }
         
         /// <summary>
@@ -31,7 +32,7 @@ namespace Pcf.GivingToCustomer.WebHost.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PreferenceResponse>>> GetPreferencesAsync()
         {
-            var preferences = await _preferencesRepository.GetAllAsync();
+            var preferences = await _preferenceCacheService.GetAllPreference();
 
             var response = preferences.Select(x => new PreferenceResponse()
             {

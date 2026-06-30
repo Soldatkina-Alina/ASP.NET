@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Pcf.GivingToCustomer.Core.Abstractions;
 using Pcf.GivingToCustomer.Core.Domain;
 using Pcf.GivingToCustomer.DataAccess.Repositories;
 using Pcf.GivingToCustomer.WebHost.Controllers;
 using Pcf.GivingToCustomer.WebHost.Models;
+using Pcf.GivingToCustomer.WebHost.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Pcf.GivingToCustomer.IntegrationTests.Components.WebHost.Controllers
@@ -17,15 +20,19 @@ namespace Pcf.GivingToCustomer.IntegrationTests.Components.WebHost.Controllers
         private readonly CustomersController _customersController;
         private readonly EfRepository<Customer> _customerRepository;
         private readonly EfRepository<Preference> _preferenceRepository;
-        
+        private readonly IPreferenceCacheService _preferenceCacheService;
+        private readonly IDistributedCache _distributedCache;
         public CustomersControllerTests(EfDatabaseFixture efDatabaseFixture)
         {
             _customerRepository = new EfRepository<Customer>(efDatabaseFixture.DbContext);
             _preferenceRepository = new EfRepository<Preference>(efDatabaseFixture.DbContext);
-            
+            _distributedCache = new TestDistributedCache();
+            _preferenceCacheService = new PreferenceCacheService(_preferenceRepository, _distributedCache);
+
             _customersController = new CustomersController(
                 _customerRepository, 
-                _preferenceRepository);
+                _preferenceRepository,
+                _preferenceCacheService);
         }
         
         [Fact]

@@ -60,6 +60,15 @@ services:
     ports:
       - "8093:8080"
     environment:
-      - "ConnectionStrings:PromocodeFactoryGivingToCustomerDb=Host=promocode-factory-giving-to-customer-db;Database=promocode_factory_giving_to_customer_db;Username=postgres;Password=docker"          
+      - "ConnectionStrings:PromocodeFactoryGivingToCustomerDb=Host=promocode-factory-giving-to-customer-db;Database=promocode_factory_giving_to_customer_db;Username=postgres;Password=docker" 
+      - "Redis:ConnectionString=redis-server:6379"
     depends_on: 
       - promocode-factory-giving-to-customer-db
+      - redis-server
+  #Redis
+  redis-server:
+    image: "redis:latest"
+    restart: always
+    container_name: 'redis-server'    
+    ports:
+      - "6379:6379"
